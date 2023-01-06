@@ -1,4 +1,5 @@
-// https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/description/
+// https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/description
+// https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/submissions/872722173
 
 function get_stacked(p1, p2) {
         const stacked = (p2[0] <= p1[1] && p2[1] >= p1[0])
