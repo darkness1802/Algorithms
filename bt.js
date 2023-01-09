@@ -1,27 +1,31 @@
-let A = [3, 1, 4, 6, 7, 8, 1, 4, 6, 7, 7, 6].sort((a,b) => b - a)
-let B = [ ...new Set(A) ]
-let res = []
+let testCase = [[10,16],[2,8],[1,6],[7,12]]
+testCase.sort((a, b) => a[0] - b[0]);
+let lastArrowPossibleRange = testCase[0]; // phạm vi bắn mũi tên cuối
 
-function check (z) {
-    let count_equalZ = 0
-    for (let i = 0; i < A.length; i++) {
-        if (A[i] == z) {
-            count_equalZ += 1
-        } 
+// Lấy ra 1 mũi chuẩn bị bắn nào
+let arrows = 1;
+
+for (let i = 0; i < points.length; i++) {
+
+    let [currBalloonStart, currBalloonEnd] = points[i];
+    const [lastArrowPossibleStart, lastArrowPossibleEnd] = lastArrowPossibleRange;
+
+    // if this balloon starts before or equal to the lastArrowPossibleEnd, then it can overlap, and is hit
+    if (currBalloonStart <= lastArrowPossibleEnd) {
+      // now you must update the possible range that the arrow was fired at.
+      // you can assume (because of sort) that the currentBalloonStarts >= lastArrowPossibleStart
+      // you cannot assume the the currBalloonEnd >= lastArrowPossibleEnd (this balloon could end sooner)*
+      // * first balloon [1,8], second balloon [2,4] 
+      // * To hit both the arrows new possible range is [2,4]
+      // * This is what many solutions are getting wrong
+
+      lastArrowPossibleRange = [currBalloonStart,Math.min(currBalloonEnd, lastArrowPossibleEnd)];
+      // move onto the next balloon without incrementing arrows, because this one was popped with the prev arrow
+      continue;
     }
-    res.push({ item: z, value : count_equalZ })
-}
-
-for (let x = 0; x < B.length; x ++) {
-    check (B[x])
-}
-
-let asd = res[0]
-for (let i = 0; i < res.length; i++) {
-    if (res[i].value > asd.value) {
-        asd = res[i]
-    }
-}
-
-console.log(`So lan xuat hien nhieu nhat trong mang:`)
-console.log(asd)
+    // Otherwise, the current balloon starts after the end of the lastArrowPossibleRange 
+    // You need a new arrow
+    arrows++;
+    // and a new possible range for that arrow
+    lastArrowPossibleRange = [currBalloonStart, currBalloonEnd];
+  }
